@@ -46,5 +46,5 @@ task_registry.register( "a1", LeggedRobot, A1RoughCfg(), A1RoughCfgPPO() )
 task_registry.register( "go1", LeggedRobot, Go1RoughCfg(), Go1RoughCfgPPO() )
 task_registry.register( "aliengo", LeggedRobot, AlienGoRoughCfg(), AlienGoRoughCfgPPO() )
 task_registry.register( "zsl1", LeggedRobot, ZSL1RoughCfg(), ZSL1RoughCfgPPO() )
-task_registry.register( "zsl1", LeggedRobotSR, ZSL1PlainCfg(), ZSL1PlainCfgPPO() )
+task_registry.register( "zsl1SR", LeggedRobotSR, ZSL1PlainCfg(), ZSL1PlainCfgPPO() )
 

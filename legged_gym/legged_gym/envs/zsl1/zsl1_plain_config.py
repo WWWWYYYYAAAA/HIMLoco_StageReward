@@ -125,24 +125,24 @@ class ZSL1PlainCfg( LeggedRobotCfg ):
     class rewards( LeggedRobotCfg.rewards ):
         class scales:
             termination = -0.0
-            tracking_lin_vel = 1.0
-            tracking_ang_vel = 0.5
-            lin_vel_z = -2.0
-            ang_vel_xy = -0.05
-            orientation = -0.2
-            dof_acc = -2.5e-7
-            joint_power = -2e-5
-            base_height = -10.0
-            foot_clearance = -0.1
-            action_rate = -0.01
-            smoothness = -0.01
+            tracking_lin_vel = 0.0
+            tracking_ang_vel = 0.0
+            lin_vel_z = -0.0
+            ang_vel_xy = -0.0
+            orientation = -0.0
+            dof_acc = -0.0
+            joint_power = -0.0
+            base_height = -0.0
+            foot_clearance = -0.0
+            action_rate = -0.0
+            smoothness = -0.0
             feet_air_time =  0.0
             collision = -0.0
-            feet_stumble = -0.01
-            stand_still = -0.01
+            feet_stumble = -0.0
+            stand_still = -0.0
             torques = -0.0
             dof_vel = -0.0
-            dof_pos_limits = -0.1
+            dof_pos_limits = -0.0
             dof_vel_limits = -0.0
             torque_limits = -0.0
 
