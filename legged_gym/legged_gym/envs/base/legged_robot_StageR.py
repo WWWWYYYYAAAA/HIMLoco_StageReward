@@ -1382,4 +1382,35 @@ class LeggedRobotSR(BaseTask):
         style_penalty += torch.square(self.dof_pos[:, 6:9] - self.crawled_dof_pos[:, 6:9]).mean(dim=-1)
         rew_stage[:] += self.stage_buf[:, 3]*(-style_penalty)
         rew_stage[:] += self.stage_buf[:, 4]*(-torch.square(self.dof_pos - self.default_dof_pos).mean(dim=-1))*2.0
+        
+        ####cost
+        # foot contact
+        foot_contact_threshold = 0.25
+        foot_contact_forces = self.contact_forces[:, self.feet_indices, :]
+        calf_contact_forces = self.contact_forces[:, self.calf_indices, :]
+        foot_contact = ((torch.norm(foot_contact_forces, dim=2) > 10.0)|(torch.norm(calf_contact_forces, dim=2) > 10.0)).type(torch.float)
+        rew_stage[:] += -self.stage_buf[:, 0]*(foot_contact_threshold)
+        rew_stage[:] += -self.stage_buf[:, 1]*(foot_contact_threshold)
+        rew_stage[:] += -self.stage_buf[:, 2]*(foot_contact_threshold)
+        rew_stage[:] += -self.stage_buf[:, 3]*(foot_contact_threshold)
+        rew_stage[:] += -self.stage_buf[:, 4]*(1.0 - foot_contact.mean(dim=-1))
+        # body contact
+        body_contact_threshold = 0.025
+        term_contact = torch.any(torch.norm(self.contact_forces[:, self.termination_contact_indices, :], dim=-1) > 1.0, dim=-1)
+        undesired_contact = torch.any(torch.norm(self.contact_forces[:, self.penalised_contact_indices, :], dim=-1) > 1.0, dim=-1)
+        rew_stage[:] += -self.stage_buf[:, 0]*(body_contact_threshold)
+        rew_stage[:] += -self.stage_buf[:, 1]*(body_contact_threshold)
+        rew_stage[:] += -self.stage_buf[:, 2]*(body_contact_threshold)
+        rew_stage[:] += -self.stage_buf[:, 3]*(body_contact_threshold)
+        rew_stage[:] += -self.stage_buf[:, 4]*(torch.logical_or(term_contact, undesired_contact).type(torch.float))
+        # joint pos
+        rew_stage[:] += -torch.mean((
+            (self.dof_positions < self.dof_pos_lower_limits)|(self.dof_positions > self.dof_pos_upper_limits)
+            ).to(torch.float), dim=-1)
+        # joint vel
+        rew_stage[:] += -torch.mean(
+            (torch.abs(self.dof_velocities) > self.dof_vel_upper_limits).to(torch.float), dim=-1)
+        # joint torque
+        rew_stage[:] += -torch.mean(
+            (torch.abs(self.dof_torques) > self.dof_torques_upper_limits).to(torch.float), dim=-1)
         return rew_stage
