@@ -36,7 +36,7 @@ from .a1.a1_config import A1RoughCfg, A1RoughCfgPPO
 from legged_gym.envs.go1.go1_config import Go1RoughCfg, Go1RoughCfgPPO
 from legged_gym.envs.aliengo.aliengo_config import AlienGoRoughCfg, AlienGoRoughCfgPPO
 from legged_gym.envs.zsl1.zsl1_config import ZSL1RoughCfg, ZSL1RoughCfgPPO
-from legged_gym.envs.zsl1.zsl1_plain_config import ZSL1PlainCfg, ZSL1PlainCfgPPO
+from legged_gym.envs.zsl1.zsl1_plane_config import ZSL1PlaneCfg, ZSL1PlaneCfgPPO
 
 import os
 
@@ -46,5 +46,5 @@ task_registry.register( "a1", LeggedRobot, A1RoughCfg(), A1RoughCfgPPO() )
 task_registry.register( "go1", LeggedRobot, Go1RoughCfg(), Go1RoughCfgPPO() )
 task_registry.register( "aliengo", LeggedRobot, AlienGoRoughCfg(), AlienGoRoughCfgPPO() )
 task_registry.register( "zsl1", LeggedRobot, ZSL1RoughCfg(), ZSL1RoughCfgPPO() )
-task_registry.register( "zsl1SR", LeggedRobotSR, ZSL1PlainCfg(), ZSL1PlainCfgPPO() )
+task_registry.register( "zsl1SR", LeggedRobotSR, ZSL1PlaneCfg(), ZSL1PlaneCfgPPO() )
 

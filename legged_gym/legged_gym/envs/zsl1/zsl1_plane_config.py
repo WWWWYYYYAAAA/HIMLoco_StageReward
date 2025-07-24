@@ -30,9 +30,9 @@
 
 from legged_gym.envs.base.legged_robot_config import LeggedRobotCfg, LeggedRobotCfgPPO
 
-class ZSL1PlainCfg( LeggedRobotCfg ):
+class ZSL1PlaneCfg( LeggedRobotCfg ):
     class init_state( LeggedRobotCfg.init_state ):
-        pos = [0.0, 0.0, 0.40] # x,y,z [m]
+        pos = [0.0, 0.0, 0.1] # x,y,z [m]
         default_joint_angles = { # = target angles [rad] when action = 0.0
             # 'FL_ABAD_JOINT': 0.1,   # [rad]
             # 'RL_ABAD_JOINT': 0.1,   # [rad]
@@ -63,9 +63,12 @@ class ZSL1PlainCfg( LeggedRobotCfg ):
             'FR_calf_joint': -1.5,  # [rad]
             'RR_calf_joint': -1.5,    # [rad]
         }
+        rot = [1.0, 0.0, 0.0, 0.0] # x,y,z,w [quat]
+        lin_vel = [0.0, 0.0, 0.0]  # x,y,z [m/s]
+        ang_vel = [0.0, 0.0, 0.0]  # x,y,z [rad/s]
 
     class terrain:
-        mesh_type = 'plan' # "heightfield" # none, plane, heightfield or trimesh
+        mesh_type = 'plane' # "heightfield" # none, plane, heightfield or trimesh
         horizontal_scale = 0.1 # [m]
         vertical_scale = 0.005 # [m]
         border_size = 25 # [m]
@@ -74,20 +77,20 @@ class ZSL1PlainCfg( LeggedRobotCfg ):
         dynamic_friction = 1.0
         restitution = 0.
         # rough terrain only:
-        # measure_heights = True
-        # measured_points_x = [-0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0., 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8] # 1mx1.6m rectangle (without center line)
-        # measured_points_y = [-0.5, -0.4, -0.3, -0.2, -0.1, 0., 0.1, 0.2, 0.3, 0.4, 0.5]
-        # selected = False # select a unique terrain type and pass all arguments
-        # terrain_kwargs = None # Dict of arguments for selected terrain
-        # max_init_terrain_level = 5 # starting curriculum state
-        # terrain_length = 8.
-        # terrain_width = 8.
-        # num_rows= 10 # number of terrain rows (levels)
-        # num_cols = 20 # number of terrain cols (types)
-        # # terrain types: [smooth slope, rough slope, stairs up, stairs down, discrete]
-        # terrain_proportions = [0.1, 0.2, 0.3, 0.3, 0.1]
-        # # trimesh only:
-        # slope_treshold = 0.75 # slopes above this threshold will be corrected to vertical surfaces
+        measure_heights = True
+        measured_points_x = [-0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0., 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8] # 1mx1.6m rectangle (without center line)
+        measured_points_y = [-0.5, -0.4, -0.3, -0.2, -0.1, 0., 0.1, 0.2, 0.3, 0.4, 0.5]
+        selected = False # select a unique terrain type and pass all arguments
+        terrain_kwargs = None # Dict of arguments for selected terrain
+        max_init_terrain_level = 5 # starting curriculum state
+        terrain_length = 8.
+        terrain_width = 8.
+        num_rows= 10 # number of terrain rows (levels)
+        num_cols = 20 # number of terrain cols (types)
+        # terrain types: [smooth slope, rough slope, stairs up, stairs down, discrete]
+        terrain_proportions = [0.1, 0.2, 0.3, 0.3, 0.1]
+        # trimesh only:
+        slope_treshold = 0.75 # slopes above this threshold will be corrected to vertical surfaces
 
     class control( LeggedRobotCfg.control ):
         # PD Drive parameters:
@@ -124,7 +127,7 @@ class ZSL1PlainCfg( LeggedRobotCfg ):
         
     class rewards( LeggedRobotCfg.rewards ):
         class scales:
-            termination = -0.0
+            termination = -0.1
             tracking_lin_vel = 0.0
             tracking_ang_vel = 0.0
             lin_vel_z = -0.0
@@ -155,7 +158,7 @@ class ZSL1PlainCfg( LeggedRobotCfg ):
         max_contact_force = 100. # forces above this value are penalized
         clearance_height_target = -0.2
 
-class ZSL1PlainCfgPPO( LeggedRobotCfgPPO ):
+class ZSL1PlaneCfgPPO( LeggedRobotCfgPPO ):
     class algorithm( LeggedRobotCfgPPO.algorithm ):
         entropy_coef = 0.01
     class runner( LeggedRobotCfgPPO.runner ):
