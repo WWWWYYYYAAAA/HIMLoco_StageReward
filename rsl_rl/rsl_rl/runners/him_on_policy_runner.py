@@ -218,6 +218,10 @@ class HIMOnPolicyRunner:
                         #   f"""{'Mean episode length/episode:':>{pad}} {locs['mean_trajectory_length']:.2f}\n""")
 
         log_string += ep_string
+        stage_string = f""
+        for stage in range(self.env.num_stages):
+            stage_string += f"""{f'Stage{stage}:':>{pad}} {torch.sum(self.env.stage_buf[:, stage]).item()/self.env.num_envs:4f}\n"""
+        log_string += stage_string
         log_string += (f"""{'-' * width}\n"""
                        f"""{'Total timesteps:':>{pad}} {self.tot_timesteps}\n"""
                        f"""{'Iteration time:':>{pad}} {iteration_time:.2f}s\n"""
@@ -225,6 +229,8 @@ class HIMOnPolicyRunner:
                        f"""{'ETA:':>{pad}} {self.tot_time / (locs['it'] + 1) * (
                                locs['num_learning_iterations'] - locs['it']):.1f}s\n""")
         print(log_string)
+        # print("stage status", torch.sum(self.env.stage_buf[:, 0]).item()/self.env.num_envs)
+       
 
     def save(self, path, infos=None):
         torch.save({

@@ -63,6 +63,23 @@ class ZSL1PlaneCfg( LeggedRobotCfg ):
             'FR_calf_joint': -1.5,  # [rad]
             'RR_calf_joint': -1.5,    # [rad]
         }
+
+        crawled_joint_angles = {
+            'FL_hip_joint': -0.05,   # [rad]
+            'RL_hip_joint': -0.05,   # [rad]
+            'FR_hip_joint': 0.05 ,  # [rad]
+            'RR_hip_joint': 0.05,   # [rad]
+
+            'FL_thigh_joint': 2.6,     # [rad]
+            'RL_thigh_joint': 2.6,   # [rad]
+            'FR_thigh_joint': 2.6,     # [rad]
+            'RR_thigh_joint': 2.6,   # [rad]
+
+            'FL_calf_joint': -2.5,   # [rad]
+            'RL_calf_joint': -2.5,    # [rad]
+            'FR_calf_joint': -2.5,  # [rad]
+            'RR_calf_joint': -2.5,    # [rad]
+        }
         rot = [1.0, 0.0, 0.0, 0.0] # x,y,z,w [quat]
         lin_vel = [0.0, 0.0, 0.0]  # x,y,z [m/s]
         ang_vel = [0.0, 0.0, 0.0]  # x,y,z [rad/s]
@@ -148,6 +165,7 @@ class ZSL1PlaneCfg( LeggedRobotCfg ):
             dof_pos_limits = -0.0
             dof_vel_limits = -0.0
             torque_limits = -0.0
+            halfroll = 1.0
 
         only_positive_rewards = False # if true negative total rewards are clipped at zero (avoids early termination problems)
         tracking_sigma = 0.25 # tracking reward = exp(-error^2/sigma)
